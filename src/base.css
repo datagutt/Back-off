@@ -87,6 +87,8 @@
 /* Custom properties */
 body, html, .container, .hero {
   height: 100%;
+  cursor: pointer;
+  cursor: hand; /* < ie5.5 compatibility lel */
 }
 
 .container header, #loadingSpinner header {

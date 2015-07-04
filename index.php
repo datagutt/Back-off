@@ -119,6 +119,21 @@ var options = {
   itemSelector: '.col-4',
   gutter: 0
 };
+var shuffleGrid = function(pckry) {
+	var shufflers = [];
+	var nonShufflers = [];
+	for ( var i=0, len = pckry.items.length; i < len; i++ ) {
+		var item = pckry.items[i];
+		var collection = shufflers;
+		collection.push( item );
+	}
+
+	shufflers.sort(function() {
+		return Math.random() > 0.5;
+	});
+	pckry.items = nonShufflers.concat(shufflers);
+	pckry.layout();
+};
 var pckry;
 var imgLoad = imagesLoaded(gifGrid);
 imgLoad.on('progress', function(instance, image){
@@ -128,13 +143,19 @@ imgLoad.on('progress', function(instance, image){
 });
 imgLoad.on('done', function(){
 	pckry = new Packery(gifGrid, options);
+	shuffleGrid(pckry);
 	loadingSpinner.parentNode.removeChild(loadingSpinner);
 	loadingSpinner.style.opacity = 0;
 	gifGrid.style.opacity = 1;
 	message.style.opacity = 1;
 });
+document.body.onclick = function gifGridClick(){
+	shuffleGrid(pckry);
+	$('#message').text(texts[Math.floor(Math.random() * texts.length)])
+};
 </script>
 <script type="text/javascript">
+// TODO: Remove jQuery dependency
 var texts = [
 	'GET AWAY FROM ME!',
 	'BACK OFF!',
@@ -142,8 +163,6 @@ var texts = [
 	'BACK THE HELL OFF!',
 	'STAND BACK, YOU FOOL!'
 ];
-// Randomize
-texts = shuffle(texts);
 var count = 0;
 var interval = 1 * 60 * 60;
 
@@ -163,7 +182,7 @@ function addText() {
 	count < texts.length ? count++ : count = 0; 
 }
 //$('#message').text(texts[Math.floor(Math.random() * texts.length)])
-setInterval(addText, interval);
+var textChangeInterval = setInterval(addText, interval);
 </script>
 </body>
 </html>
