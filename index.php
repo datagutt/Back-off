@@ -111,6 +111,35 @@
 <!-- self-explanatory -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/3.1.8/imagesloaded.pkgd.min.js"></script>
 <script type="text/javascript">
+// TODO: Remove jQuery dependency
+var texts = [
+	'GET AWAY FROM ME!',
+	'BACK OFF!',
+	'GET OUT OF MY FACE!',
+	'BACK THE HELL OFF!',
+	'STAND BACK, YOU FOOL!'
+];
+var count = 0;
+var interval = 1 * 60 * 60;
+
+function shuffle(o){
+    for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+}
+function addText() {
+	$('#message').fadeTo(interval/2 -1, 0.01, function(){
+		// this callback runs when fadeOut is finished
+		// so that the text change is "invisible"
+		$(this).text(texts[count]); 
+		// Randomize
+		texts = shuffle(texts);
+	}).delay(1).fadeTo(interval/2, 1);
+    // Note that arrays are zero indexed so "Four" would blink twice. 
+	count < texts.length ? count++ : count = 0; 
+}
+//$('#message').text(texts[Math.floor(Math.random() * texts.length)])
+</script>
+<script type="text/javascript">
 var gifGrid = document.querySelector('#gifgrid');
 var loadingSpinner = document.querySelector('#loadingSpinner');
 var message = document.querySelector('#message');
@@ -148,41 +177,12 @@ imgLoad.on('done', function(){
 	loadingSpinner.style.opacity = 0;
 	gifGrid.style.opacity = 1;
 	message.style.opacity = 1;
+	var textChangeInterval = setInterval(addText, interval);
 });
 document.body.onclick = function gifGridClick(){
 	shuffleGrid(pckry);
 	$('#message').text(texts[Math.floor(Math.random() * texts.length)])
 };
-</script>
-<script type="text/javascript">
-// TODO: Remove jQuery dependency
-var texts = [
-	'GET AWAY FROM ME!',
-	'BACK OFF!',
-	'GET OUT OF MY FACE!',
-	'BACK THE HELL OFF!',
-	'STAND BACK, YOU FOOL!'
-];
-var count = 0;
-var interval = 1 * 60 * 60;
-
-function shuffle(o){
-    for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
-}
-function addText() {
-	$('#message').fadeTo(interval/2 -1, 0.01, function(){
-		// this callback runs when fadeOut is finished
-		// so that the text change is "invisible"
-		$(this).text(texts[count]); 
-		// Randomize
-		texts = shuffle(texts);
-	}).delay(1).fadeTo(interval/2, 1);
-    // Note that arrays are zero indexed so "Four" would blink twice. 
-	count < texts.length ? count++ : count = 0; 
-}
-//$('#message').text(texts[Math.floor(Math.random() * texts.length)])
-var textChangeInterval = setInterval(addText, interval);
 </script>
 </body>
 </html>
